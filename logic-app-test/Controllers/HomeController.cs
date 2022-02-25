@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using logic_app_test.AzureModel;
 using System.IO;
+using System.Collections.Generic;
 
 namespace logic_app_test.Controllers
 {
@@ -44,10 +45,10 @@ namespace logic_app_test.Controllers
 
         [HttpGet("GetAllFilesNameWithDescription")]
         public IActionResult GetFilesNameWithDescription()
-        {
+        { 
             try
             {
-                return Ok(AzureStorageService.GetAllFilesName(_blobServiceClient));
+                return Ok(AzureStorageService.GetAllFilesName(_blobServiceClient, _cloudTableClient));
             }
             catch (Exception ex)
             {
@@ -56,7 +57,7 @@ namespace logic_app_test.Controllers
         }
 
 
-            [HttpGet("GetFileWithDescriptionByName")]
+        [HttpGet("GetFileWithDescriptionByName")]
         public IActionResult GetFileWithDescriptionWithDescription(string fileName)
         {
             try

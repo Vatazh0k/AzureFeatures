@@ -40,15 +40,26 @@ namespace logic_app_test.Services
             var table = cloudTableClient.GetTableReference(tableName);
             table.CreateIfNotExistsAsync().Wait();
             TableBatchOperation operations = new TableBatchOperation();
-            TableOperation insertOperation = TableOperation.Insert(new FileMeta(file.File.FileName, file.Description));
+            TableOperation insertOperation = TableOperation.Insert(new FileMeta(Path.GetFileNameWithoutExtension(file.File.FileName), file.Description));
             table.ExecuteAsync(insertOperation);
         }
 
-        public static IEnumerable GetAllFilesName(BlobServiceClient _blobServiceClient)
+        public static IEnumerable GetAllFilesName(BlobServiceClient _blobServiceClient, CloudTableClient _cloudTableClient)
         {
             var container = _blobServiceClient.GetBlobContainerClient(AppsettingsProvider.GetJsonAppsettingsFile()["ConnectionStrings:blobContainerName"]);
             var blobs = container.GetBlobs();
-            foreach (var blob in blobs) yield return blob.Name;    
+            foreach (var blob in blobs)
+            {
+                var tableName = Path.GetFileNameWithoutExtension(blob.Name.Replace("_", ""));
+                CloudTable table = _cloudTableClient.GetTableReference(tableName);
+
+                TableQuery rangeQuery = new TableQuery()
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, Path.GetFileNameWithoutExtension(blob.Name)));
+
+                var description = table.ExecuteQuerySegmentedAsync(rangeQuery, new TableContinuationToken()).Result.Results[0].RowKey;
+
+                yield return new Dto.FileMeta(blob.Name, description);
+            }
         }
     }
 }
