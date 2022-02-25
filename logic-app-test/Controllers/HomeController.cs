@@ -21,10 +21,10 @@ namespace logic_app_test.Controllers
         private readonly CloudTableClient _cloudTableClient;
 
         public HomeController(
-            BlobServiceClient BlobServiceClient,
+            BlobServiceClient _blobServiceClient,
             CloudTableClient _cloudTableClient)//should i inject just a storage account and get blob and table from it?
         {
-            this._blobServiceClient = BlobServiceClient;
+            this._blobServiceClient = _blobServiceClient;
             this._cloudTableClient = _cloudTableClient;
         }
          
