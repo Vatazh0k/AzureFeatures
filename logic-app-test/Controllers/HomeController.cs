@@ -34,7 +34,7 @@ namespace logic_app_test.Controllers
             {
                 AzureStorageService.AddFileToBlob(file.File, _blobServiceClient);
                 AzureStorageService.AddDescriptionToTable(file, _cloudTableClient);
-                return Ok("Success");
+                return Ok("Success");//Make atomarity
             }
             catch (Exception ex)
             {
@@ -42,12 +42,26 @@ namespace logic_app_test.Controllers
             }
         }
 
-        [HttpGet("GetFileWithDescription")]
+        [HttpGet("GetAllFilesNameWithDescription")]
+        public IActionResult GetFilesNameWithDescription()
+        {
+            try
+            {
+                return Ok(AzureStorageService.GetAllFilesName(_blobServiceClient));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+            [HttpGet("GetFileWithDescriptionByName")]
         public IActionResult GetFileWithDescriptionWithDescription(string fileName)
         {
             try
             {
-                return Ok(AzureStorageService.ReadFileFromBlob(fileName, _blobServiceClient));
+                return File(AzureStorageService.ReadFileFromBlob(fileName, _blobServiceClient), "image/png");
             }
             catch (Exception ex)
             {
