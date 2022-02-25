@@ -42,8 +42,8 @@ namespace logic_app_test.Controllers
             }
         }
 
-        [HttpGet("GetFileFromBlob")]
-        public IActionResult GetFileFromBlobByName(string fileName)
+        [HttpGet("GetFileWithDescription")]
+        public IActionResult GetFileWithDescriptionWithDescription(string fileName)
         {
             try
             {
