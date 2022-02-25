@@ -26,20 +26,6 @@ namespace logic_app_test.Controllers
             this._blobServiceClient = BlobServiceClient;
             this._cloudTableClient = _cloudTableClient;
         }
-
-        [HttpPost("UploadFileToBlob")]
-        public IActionResult UploadFileToBlob(IFormFile file)
-        {
-            try
-            {
-                AzureStorageService.AddFileToBlob(file, _blobServiceClient);
-                return Ok("Success");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
          
         [HttpPost("UploadFileWithDescription")]
         public IActionResult UploadImageWithDescription([FromForm] FileWithDescription file)
