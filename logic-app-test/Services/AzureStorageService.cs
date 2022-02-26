@@ -14,7 +14,7 @@ namespace logic_app_test.Services
         {
             var blob = _blobServiceClient.GetBlobContainerClient(Settings.BlobContainerName);
             using var fileStream = file.File.OpenReadStream();
-            byte[] bytes = new byte[fileStream.Length];
+            var bytes = new byte[fileStream.Length];
             fileStream.Read(bytes, 0, (int)file.File.Length);
             fileStream.Position = 0;
             blob.UploadBlob(Path.GetFileNameWithoutExtension(file.File.FileName), fileStream);
@@ -36,8 +36,7 @@ namespace logic_app_test.Services
             var tableName = Path.GetFileNameWithoutExtension(file.File.FileName.Replace("_", ""));
             var table = cloudTableClient.GetTableReference(tableName);
             table.CreateIfNotExistsAsync().Wait();
-            TableBatchOperation operations = new TableBatchOperation();
-            TableOperation insertOperation = TableOperation.Insert(new FileMeta(Path.GetFileNameWithoutExtension(file.File.FileName), file.Description));
+            var insertOperation = TableOperation.Insert(new FileMeta(Path.GetFileNameWithoutExtension(file.File.FileName), file.Description));
             table.ExecuteAsync(insertOperation);
         }
 
@@ -48,9 +47,9 @@ namespace logic_app_test.Services
             foreach (var blob in blobs)
             {
                 var tableName = Path.GetFileNameWithoutExtension(blob.Name.Replace("_", ""));
-                CloudTable table = _cloudTableClient.GetTableReference(tableName);
+                var table = _cloudTableClient.GetTableReference(tableName);
 
-                TableQuery rangeQuery = new TableQuery()
+                var rangeQuery = new TableQuery()
                     .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, Path.GetFileNameWithoutExtension(blob.Name)));
 
                 var description = table.ExecuteQuerySegmentedAsync(rangeQuery, new TableContinuationToken()).Result.Results[0].RowKey;
