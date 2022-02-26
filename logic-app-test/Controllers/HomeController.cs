@@ -33,9 +33,9 @@ namespace logic_app_test.Controllers
         {
             try
             {
-                AzureStorageService.AddFileToBlob(file.File, _blobServiceClient);
-                AzureStorageService.AddDescriptionToTable(file, _cloudTableClient);
-                return Ok("Success");//Make atomarity
+                AzureStorageService.AddFileToBlob(file, _blobServiceClient);
+                AzureStorageService.AddDescriptionToTable(file, _cloudTableClient);//Make atomarity
+                return Ok("Success");
             }
             catch (Exception ex)
             {

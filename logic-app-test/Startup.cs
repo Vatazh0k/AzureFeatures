@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using logic_app_test.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,16 +31,12 @@ namespace logic_app_test
 
             services.AddSingleton(sp =>
             {
-                return new BlobServiceClient(
-                                Configuration.GetValue<string>("ConnectionStrings:storageConnectionString"));
+                return new BlobServiceClient(Settings.StorageConnectionString);
             });
 
             services.AddSingleton(provider =>
             {
-                var settings = Configuration.GetValue<string>("ConnectionStrings:storageConnectionString");
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(settings);
-                CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-                return tableClient;
+                return CloudStorageAccount.Parse(Settings.StorageConnectionString).CreateCloudTableClient();
             });
         }
 
