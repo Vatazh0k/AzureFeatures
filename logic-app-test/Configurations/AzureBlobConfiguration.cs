@@ -8,7 +8,7 @@ namespace logic_app_test.Configurations
     {
         public static void AddBlob(this IServiceCollection services)
         {
-            services.AddSingleton(sp =>
+            services.AddSingleton(provider =>
             {
                 return new BlobServiceClient(Settings.StorageConnectionString);
             });
