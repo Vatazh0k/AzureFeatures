@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using logic_app_test.Infrastructure;
+using logic_app_test.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace logic_app_test.Services
 {
-    public class AzureBlob
+    public class AzureBlob : IAzureBlob
     {
         private readonly BlobServiceClient _blobServiceClient;
         public AzureBlob(BlobServiceClient blobServiceClient) => _blobServiceClient = blobServiceClient;

@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using logic_app_test.AzureModel;
 using logic_app_test.Infrastructure;
+using logic_app_test.Interfaces;
 using logic_app_test.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -13,17 +14,17 @@ namespace logic_app_test.Services
 {
     public class AzureStorage
     {
-        private AzureBlob _azureBlolbService;
-        private AzureTable _azureTableService;
+        private IAzureBlob _azureBlolbService;
+        private IAzureTable _azureTableService;
 
 
-        public AzureBlob Blob => _azureBlolbService;
-        public AzureTable Table => _azureTableService;
+        public IAzureBlob Blob => _azureBlolbService;
+        public IAzureTable Table => _azureTableService;
 
 
         public AzureStorage(
-            AzureBlob _azureBlolbService,
-            AzureTable _azureTableService)
+            IAzureBlob _azureBlolbService,
+            IAzureTable _azureTableService)
         {
             this._azureBlolbService = _azureBlolbService;
             this._azureTableService = _azureTableService;

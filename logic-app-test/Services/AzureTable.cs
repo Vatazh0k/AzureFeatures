@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using logic_app_test.AzureModel;
 using logic_app_test.Infrastructure;
+using logic_app_test.Interfaces;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace logic_app_test.Services
 {
-    public class AzureTable
+    public class AzureTable : IAzureTable
     {
         private readonly CloudTableClient _cloudTableClient;
         public AzureTable(CloudTableClient cloudTableClient) => _cloudTableClient = cloudTableClient;
