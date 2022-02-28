@@ -1,14 +1,4 @@
-﻿using Azure.Storage.Blobs;
-using logic_app_test.AzureModel;
-using logic_app_test.Infrastructure;
-using logic_app_test.Interfaces;
-using logic_app_test.ViewModels;
-using Microsoft.AspNetCore.Http;
-using Microsoft.WindowsAzure.Storage.Table;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
+﻿using logic_app_test.Interfaces;
 
 namespace logic_app_test.Services
 {
