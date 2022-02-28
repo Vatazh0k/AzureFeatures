@@ -10,8 +10,9 @@ namespace logic_app_test.Configurations
     {
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<AzureStorageService>();
-
+            services.AddTransient<AzureStorage>();
+            services.AddTransient<AzureBlob>();
+            services.AddTransient<AzureTable>();
 
             services.AddTransient(provider =>
             {

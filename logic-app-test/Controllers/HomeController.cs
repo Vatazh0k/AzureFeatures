@@ -10,16 +10,16 @@ namespace logic_app_test.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly AzureStorageService _azureStorage;
-        public HomeController(AzureStorageService azureStorageService) => _azureStorage = azureStorageService;
+        private readonly AzureStorage _azureStorage;
+        public HomeController(AzureStorage azureStorageService) => _azureStorage = azureStorageService;
 
         [HttpPost("UploadFileWithDescription")]
         public async Task <IActionResult> UploadImageWithDescription([FromForm] Document document)
         {
             try
             {
-                await _azureStorage.AddFileToBlob(document.Content);
-                await _azureStorage.AddFileDescriptionToTable(document.Description, document.Name);
+                await _azureStorage.Blob.AddFile(document.Content);
+                await _azureStorage.Table.AddFileDescription(document.Description, document.Name);
                 return Ok("Success");
             }
             catch (Exception ex)
@@ -33,7 +33,9 @@ namespace logic_app_test.Controllers
         { 
             try
             {
-                return Ok(await _azureStorage.GetAllFilesName());
+                var blobs = await _azureStorage.Blob.GetAll();
+                var result = await _azureStorage.Table.GetFilesName(blobs);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -47,7 +49,8 @@ namespace logic_app_test.Controllers
         {
             try
             {
-                return File(await _azureStorage.ReadFileFromBlob(fileName), "image/png");
+                var result = await _azureStorage.Blob.ReadFile(fileName);
+                return File(result, "image/png");
             }
             catch (Exception ex)
             {
