@@ -24,7 +24,7 @@ namespace logic_app_test.Services
             return Task.CompletedTask;
         }
 
-        public Task<List<Dto.FileMeta>> GetFilesName(Pageable<BlobItem> blobs)
+        public Task<List<Dto.FileMeta>> GetFilesDescription(Pageable<BlobItem> blobs)
         {
             var files = new List<Dto.FileMeta>();
             foreach (var blob in blobs)

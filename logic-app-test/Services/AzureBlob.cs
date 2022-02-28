@@ -25,7 +25,7 @@ namespace logic_app_test.Services
             return Task.CompletedTask;
         }
 
-        public Task<byte[]> ReadFile(string fileName)
+        public Task<byte[]> GetFile(string fileName)
         {
             var blob = _blobServiceClient.GetBlobContainerClient(Settings.BlobContainerName);
             using (var ms = new MemoryStream())
@@ -36,7 +36,7 @@ namespace logic_app_test.Services
             }
         }
 
-        public Task<Pageable<BlobItem>> GetAll()
+        public Task<Pageable<BlobItem>> GetAllFiles()
         {
             var container = _blobServiceClient.GetBlobContainerClient(Settings.BlobContainerName);
             var blobs = container.GetBlobs();
