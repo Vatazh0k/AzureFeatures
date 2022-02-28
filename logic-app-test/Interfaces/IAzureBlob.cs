@@ -10,6 +10,6 @@ namespace logic_app_test.Interfaces
     {
         public Task AddFile(IFormFile file);//bytes[] insted of IFromFile
         public Task<byte[]> GetFile(string fileName);
-        public Task<List<string>> GetAllFilesName();//List of blobs insted of BlolbItem
+        public Task<List<string>> GetAllFilesName();
     }
 }
