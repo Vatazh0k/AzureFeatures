@@ -33,8 +33,8 @@ namespace logic_app_test.Controllers
         { 
             try
             {
-                var blobs = await _azureStorage.Blob.GetAllFiles();
-                var result = await _azureStorage.Table.GetFilesDescription(blobs);
+                var blobsName = await _azureStorage.Blob.GetAllFilesName();
+                var result = await _azureStorage.Table.GetFilesDescription(blobsName);
                 return Ok(result);
             }
             catch (Exception ex)

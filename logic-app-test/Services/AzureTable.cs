@@ -25,20 +25,20 @@ namespace logic_app_test.Services
             return Task.CompletedTask;
         }
 
-        public Task<List<Dto.FileMeta>> GetFilesDescription(Pageable<BlobItem> blobs)
+        public Task<List<Dto.FileMeta>> GetFilesDescription(List<string> blobs)
         {
             var files = new List<Dto.FileMeta>();
-            foreach (var blob in blobs)
+            foreach (var blobName in blobs)
             {
-                var tableName = Path.GetFileNameWithoutExtension(blob.Name.Replace("_", ""));
+                var tableName = Path.GetFileNameWithoutExtension(blobName.Replace("_", ""));
                 var table = _cloudTableClient.GetTableReference(tableName);
 
                 var rangeQuery = new TableQuery()
-                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, Path.GetFileNameWithoutExtension(blob.Name)));
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, Path.GetFileNameWithoutExtension(blobName)));
 
                 var description = table.ExecuteQuerySegmentedAsync(rangeQuery, new TableContinuationToken()).Result.Results[0].RowKey;
 
-                files.Add(new Dto.FileMeta(blob.Name, description));
+                files.Add(new Dto.FileMeta(blobName, description));
             }
             return Task.FromResult(files);
         }

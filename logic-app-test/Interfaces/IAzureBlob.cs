@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace logic_app_test.Interfaces
@@ -9,6 +10,6 @@ namespace logic_app_test.Interfaces
     {
         public Task AddFile(IFormFile file);//bytes[] insted of IFromFile
         public Task<byte[]> GetFile(string fileName);
-        public Task<Pageable<BlobItem>> GetAllFiles();//List of blobs insted of BlolbItem
+        public Task<List<string>> GetAllFilesName();//List of blobs insted of BlolbItem
     }
 }

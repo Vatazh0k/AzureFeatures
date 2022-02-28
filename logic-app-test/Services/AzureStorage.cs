@@ -23,11 +23,11 @@ namespace logic_app_test.Services
 
 
         public AzureStorage(
-            IAzureBlob _azureBlolbService,
-            IAzureTable _azureTableService)
+            IAzureBlob azureBlolbService,
+            IAzureTable azureTableService)
         {
-            this._azureBlolbService = _azureBlolbService;
-            this._azureTableService = _azureTableService;
+            _azureBlolbService = azureBlolbService;
+            _azureTableService = azureTableService;
         }
     }
 }

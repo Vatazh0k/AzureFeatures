@@ -37,11 +37,16 @@ namespace logic_app_test.Services
             }
         }
 
-        public Task<Pageable<BlobItem>> GetAllFiles()
+        public Task<List<string>> GetAllFilesName()
         {
             var container = _blobServiceClient.GetBlobContainerClient(Settings.BlobContainerName);
             var blobs = container.GetBlobs();
-            return Task.FromResult(blobs);
+            var names = new List<string>();
+            foreach (var blob in blobs)
+            {
+                names.Add(blob.Name);
+            }
+            return Task.FromResult(names);
         }
     }
 }
