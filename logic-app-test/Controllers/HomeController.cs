@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
-using logic_app_test.Services;
-using System;
+﻿using logic_app_test.Services;
 using logic_app_test.ViewModels;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using logic_app_test.AzureModel;
-using System.IO;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace logic_app_test.Controllers
 {
@@ -17,24 +10,16 @@ namespace logic_app_test.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly BlobServiceClient _blobServiceClient;
-        private readonly CloudTableClient _cloudTableClient;
+        private readonly AzureStorageService _azureStorage;
+        public HomeController(AzureStorageService azureStorageService) => _azureStorage = azureStorageService;
 
-        public HomeController(
-            BlobServiceClient _blobServiceClient,
-            CloudTableClient _cloudTableClient)//should i inject just a storage account and get blob and table from it?
-        {
-            this._blobServiceClient = _blobServiceClient;
-            this._cloudTableClient = _cloudTableClient;
-        }
-         
         [HttpPost("UploadFileWithDescription")]
-        public IActionResult UploadImageWithDescription([FromForm] FileWithDescription file)
+        public async Task <IActionResult> UploadImageWithDescription([FromForm] Document document)
         {
             try
             {
-                AzureStorageService.AddFileToBlob(file, _blobServiceClient);
-                AzureStorageService.AddDescriptionToTable(file, _cloudTableClient);//Make atomarity
+                await _azureStorage.AddFileToBlob(document.Content);
+                await _azureStorage.AddFileDescriptionToTable(document.Description, document.Name);
                 return Ok("Success");
             }
             catch (Exception ex)
@@ -44,11 +29,11 @@ namespace logic_app_test.Controllers
         }
 
         [HttpGet("GetAllFilesNameWithDescription")]
-        public IActionResult GetFilesNameWithDescription()
+        public async Task<IActionResult> GetFilesNameWithDescription()
         { 
             try
             {
-                return Ok(AzureStorageService.GetAllFilesName(_blobServiceClient, _cloudTableClient));
+                return Ok(await _azureStorage.GetAllFilesName());
             }
             catch (Exception ex)
             {
@@ -58,11 +43,11 @@ namespace logic_app_test.Controllers
 
 
         [HttpGet("GetFileWithDescriptionByName")]
-        public IActionResult GetFileWithDescriptionWithDescription(string fileName)
+        public async Task<IActionResult> GetFileWithDescriptionWithDescription(string fileName)
         {
             try
             {
-                return File(AzureStorageService.ReadFileFromBlob(fileName, _blobServiceClient), "image/png");
+                return File(await _azureStorage.ReadFileFromBlob(fileName), "image/png");
             }
             catch (Exception ex)
             {

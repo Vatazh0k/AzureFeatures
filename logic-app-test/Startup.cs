@@ -14,8 +14,7 @@ namespace logic_app_test
         {
             services.AddControllers();
             services.AddSwagger();
-            services.AddBlob();
-            services.AddTable();
+            services.AddServices();
             services.AddCertificateAuthorization();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

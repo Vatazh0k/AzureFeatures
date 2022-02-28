@@ -11,7 +11,7 @@ namespace logic_app_test.Controllers
         {
 
         }
-
+            
         [HttpPost]
         [Authorize]
         public string StampsReportEmulator()
