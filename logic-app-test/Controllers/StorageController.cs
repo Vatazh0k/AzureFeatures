@@ -8,10 +8,10 @@ namespace logic_app_test.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HomeController : ControllerBase
+    public class StorageController : ControllerBase
     {
         private readonly AzureStorage _azureStorage;
-        public HomeController(AzureStorage azureStorageService) => _azureStorage = azureStorageService;
+        public StorageController(AzureStorage azureStorageService) => _azureStorage = azureStorageService;
 
         [HttpPost("UploadFileWithDescription")]
         public async Task <IActionResult> UploadImageWithDescription([FromForm] Document document)
